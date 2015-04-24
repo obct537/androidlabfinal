@@ -101,7 +101,7 @@
                 android:id="@+id/buttonUpdate"
                 android:layout_column="1"
                 android:clickable="true"
-                android:onClick="attemptSignup" />
+                android:onClick="attemptUpdate" />
         </TableRow>
 
         <TableRow

@@ -15,7 +15,7 @@ public class Expression {
         expressionID = new Integer(id);
         expressionString = txt;
         creatorEmail = creator;
-        vars = new HashMap<>();
+        vars = new HashMap<String, Double>();
     }
 
     public Integer getExpressionID(){
