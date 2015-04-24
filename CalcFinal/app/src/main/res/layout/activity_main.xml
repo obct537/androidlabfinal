@@ -49,14 +49,14 @@
             android:layout_height="fill_parent">
 
             <ListView
-                android:layout_width="175dp"
-                android:layout_height="290dp"
+                android:layout_width="150dp"
+                android:layout_height="250dp"
                 android:id="@+id/expressionListView"
                 android:layout_column="0" />
 
             <ListView
-                android:layout_width="175dp"
-                android:layout_height="290dp"
+                android:layout_width="150dp"
+                android:layout_height="250dp"
                 android:id="@+id/variableListView"
                 android:layout_column="1" />
         </TableRow>
@@ -72,7 +72,8 @@
                 android:id="@+id/buttonSolve"
                 android:layout_column="0"
                 android:layout_span="2"
-                android:onClick="solveEquation" />
+                android:onClick="solveEquation"
+                android:clickable="true" />
         </TableRow>
 
         <TableRow
@@ -83,15 +84,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ADD EXPRESSION"
-                android:id="@+id/button"
-                android:layout_column="0" />
+                android:id="@+id/buttonAddExpression"
+                android:layout_column="0"
+                android:clickable="true" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ADD VARIABLE"
-                android:id="@+id/button7"
-                android:layout_column="1" />
+                android:id="@+id/buttonAddVariable"
+                android:layout_column="1"
+                android:clickable="true" />
 
         </TableRow>
 
@@ -109,15 +112,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UPDATE EXPRESSION"
-                android:id="@+id/button8"
-                android:layout_column="0" />
+                android:id="@+id/buttonUpdateExpression"
+                android:layout_column="0"
+                android:clickable="true" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UPDATE VARIABLE"
-                android:id="@+id/button6"
-                android:layout_column="1" />
+                android:id="@+id/buttonUpdateVariable"
+                android:layout_column="1"
+                android:clickable="true" />
         </TableRow>
 
         <TableRow
@@ -128,10 +133,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="VIEW FRIENDS"
-                android:id="@+id/button2"
+                android:id="@+id/buttonFriends"
                 android:layout_column="0"
                 android:layout_span="2"
-                android:onClick="addFriend"
+                android:onClick="viewFriendsActivity"
                 android:clickable="true" />
         </TableRow>
 
