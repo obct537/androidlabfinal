@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="beaucheminm.calcfinal.Login">
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Email:"
+                android:id="@+id/textView3"
+                android:layout_column="0" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/emailText"
+                android:layout_column="1"
+                android:background="#ffffffff"
+                android:height="40dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Password:"
+                android:id="@+id/textView4"
+                android:layout_column="0" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/passwordText"
+                android:layout_column="1"
+                android:background="#ffffffff"
+                android:height="40dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:id="@+id/buttonLogin"
+                android:layout_column="1"
+                android:clickable="true"
+                android:onClick="attemptLogin" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:id="@+id/buttonSignup"
+                android:layout_column="1"
+                android:clickable="true"
+                android:onClick="attemptSignup" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update Information"
+                android:id="@+id/buttonUpdate"
+                android:layout_column="1"
+                android:clickable="true"
+                android:onClick="attemptSignup" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </TableLayout>
+</RelativeLayout>
