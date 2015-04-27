@@ -2,6 +2,7 @@ package beaucheminm.calcfinal;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 
@@ -51,16 +54,35 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void solveEquation(View v){
-        //pass in all variables related to this expression
-            //instance.setVariable("name = value")
+        EditText et = (EditText)findViewById(R.id.editText);
+        try {
+            //loop to add variables to the parser
 
-        //pass in expression to solve
 
-        ((CustomApplication)this.getApplication()).setUserEmail("hello");
+            Double result = parser.handleExpression(et.getText().toString());
+            et.setText(result.toString());
+        }catch(Exception ex){
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+            dlgAlert.setMessage(ex.getMessage());
+            dlgAlert.setTitle("Variable Replacement Error");
+            dlgAlert.setPositiveButton("OK", null);
+            dlgAlert.setCancelable(true);
+            dlgAlert.create().show();
+        }
     }
 
-    public void equationIsValid(String expression){
+    public void checkValidity(){
+        Button sb = (Button)findViewById(R.id.buttonSolve);
+        EditText et = (EditText)findViewById(R.id.editText);
+        try {
+            parser.handleExpression(et.getText().toString());
+            sb.setBackgroundColor(Color.parseColor("#FFD6D6D6"));
+            sb.setClickable(true);
 
+        } catch(Exception ex){
+            sb.setBackgroundColor(Color.parseColor("#ff000000"));
+            sb.setClickable(false);
+        }
     }
 
     public void viewFriendsActivity(View v){

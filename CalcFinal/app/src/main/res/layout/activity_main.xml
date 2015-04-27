@@ -15,7 +15,7 @@
             android:layout_height="fill_parent">
 
             <EditText
-                android:layout_width="3dp"
+                android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:id="@+id/editText"
                 android:layout_column="0"
@@ -49,13 +49,13 @@
             android:layout_height="fill_parent">
 
             <ListView
-                android:layout_width="150dp"
+                android:layout_width="fill_parent"
                 android:layout_height="250dp"
                 android:id="@+id/expressionListView"
                 android:layout_column="0" />
 
             <ListView
-                android:layout_width="150dp"
+                android:layout_width="fill_parent"
                 android:layout_height="250dp"
                 android:id="@+id/variableListView"
                 android:layout_column="1" />
@@ -66,7 +66,7 @@
             android:layout_height="fill_parent">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="SOLVE"
                 android:id="@+id/buttonSolve"
