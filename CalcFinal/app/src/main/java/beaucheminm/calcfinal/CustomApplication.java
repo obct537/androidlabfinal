@@ -1,9 +1,31 @@
 package beaucheminm.calcfinal;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Entity;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +44,7 @@ public class CustomApplication extends Application {
        expressions = new HashMap<Integer, Expression>();
        friendships = new HashMap<String, Friendship>();
        parser = new InfixParser();
-       loadInformation();
+       //loadInformation();
        super.onCreate();
     }
 
@@ -91,29 +113,87 @@ public class CustomApplication extends Application {
         expressions.get(expressionID).addVariable(varString, value);
     }
 
-    public void loadInformation(){
+    public void loadInformation(MainActivity o){
         //Here is where you have all the information loading from the database
 
-        //test data
-        userEmail = "person@place.com";
+        getData g =  new getData(o);
+        g.execute();
+    }
 
-        Expression x = new Expression(1, "3+4*x", "person@place.com");
-        x.addVariable(new Variable(x.getExpressionID(), "x", 2.0));
-        expressions.put(x.getExpressionID(), x);
+    private class getData extends AsyncTask<Long, Integer, JSONArray> {
 
-        x = new Expression(2, "x*y", "person@place.com");
-        x.addVariable(new Variable(x.getExpressionID(), "x", 1.9));
-        x.addVariable(new Variable(x.getExpressionID(), "y", 13.3));
-        expressions.put(x.getExpressionID(), x);
+        MainActivity a;
+        public getData(MainActivity a)
+        {
+            this.a = a;
+        }
 
-        x = new Expression(3, "23 + 4 - z", "another@person.com");
-        x.addVariable(new Variable(x.getExpressionID(), "z", 1.1));
-        expressions.put(x.getExpressionID(), x);
+        protected JSONArray doInBackground(Long... v) {
+            JSONArray j = null;
+            try {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://141.233.90.211:8888/index.php");
+                // Add your data via a POST command. insert.php accesses variable by using $_POST['variable']
+                // See attached php page to see the whole example.
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair("action", "getInitial"));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
+                // Execute HTTP Post Request
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                String r = EntityUtils.toString(entity);
+                j = new JSONArray(r);
 
-        Friendship f = new Friendship(1, "person@place.com", "another@person.com", "Existing");
-        friendships.put(f.getEmail_send() + " " + f.getEmail_receive(), f);
+            } catch (ClientProtocolException e) {
+                Log.i("main", "bad thing happened");
+            } catch (IOException e) {
+                Log.i("main", "bad thing happened");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //If your method returns nothing, you can state the return type is Void.
+            //However, Void is an Object, it is different from void. Therefore, you
+            //must return something. This is why I return null.
+            return j;
+        }
 
+        // This is called when doInBackground() is finished
+        protected void onPostExecute(JSONArray j) {
+            String t = j.toString();
+            try {
+                JSONArray vars = j.getJSONArray(0);
+                JSONArray exps = j.getJSONArray(1);
+                JSONArray f = j.getJSONArray(2);
 
+                for(int i = 0; i < exps.length(); i++ )
+                {
+                    JSONObject o = exps.getJSONObject(i);
+                    Expression e = new Expression(o.getInt("id"), o.getString("expression"), o.getString("email"));
+
+                    expressions.put(o.getInt("id"), e);
+                }
+
+                for(int i = 0; i < vars.length(); i++ )
+                {
+                    JSONObject o = vars.getJSONObject(i);
+                    Variable v = new Variable(o.getInt("expressionID"), o.getString("name"), o.getDouble("value"));
+
+                    expressions.get(o.getInt("expressionID")).addVariable(v);
+                }
+
+                for(int i = 0; i < f.length(); i++ )
+                {
+                    JSONObject o = f.getJSONObject(i);
+                    Friendship e = new Friendship(o.getInt("id"), o.getString("email_send"), o.getString("email_receive"), o.getString("status"));
+
+                    friendships.put(o.getString("id"), e);
+                }
+
+                a.loadExpressions();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

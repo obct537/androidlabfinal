@@ -1,9 +1,11 @@
 package beaucheminm.calcfinal;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -36,11 +38,14 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myExpressions = new ArrayList<>();
-        myVariables = new ArrayList<>();
+        myExpressions = new ArrayList<Expression>();
+        myVariables = new ArrayList<Variable>();
         expressionSelectedIndex = -1;
         variableSelectedIndex = -1;
-        loadExpressions();
+
+        CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+
+        custom.loadInformation(this);
 
         EditText edit = (EditText) findViewById(R.id.editText);
 

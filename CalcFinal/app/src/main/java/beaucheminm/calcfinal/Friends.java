@@ -31,8 +31,8 @@ public class Friends extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
-        friendshipArrayList = new ArrayList<>();
-        expressionArrayList = new ArrayList<>();
+        friendshipArrayList = new ArrayList<Friendship>();
+        expressionArrayList = new ArrayList<Expression>();
         selectedFriendshipIndex = -1;
         selectedExpressionIndex = -1;
         loadFriends();
