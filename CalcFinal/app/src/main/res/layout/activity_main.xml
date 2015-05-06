@@ -5,140 +5,151 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <TableLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Expressions"
+        android:id="@+id/textView"
+        android:layout_column="0"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Variables"
+        android:id="@+id/textView2"
+        android:layout_column="1"
+        android:layout_above="@+id/expressionListView"
+        android:layout_alignStart="@+id/variableListView" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:id="@+id/expressionListView"
+        android:listSelector="#00CCFF"
+        android:choiceMode="singleChoice"
+        android:layout_column="0"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/buttonUpdateExpression" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:id="@+id/variableListView"
+        android:listSelector="#00CCFF"
+        android:choiceMode="singleChoice"
+        android:layout_column="1"
+        android:layout_below="@+id/textView2"
+        android:layout_alignStart="@+id/buttonAddVariable"/>
+
+    <Button
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentStart="true">
+        android:layout_height="wrap_content"
+        android:text="SOLVE"
+        android:id="@+id/buttonSolve"
+        android:layout_column="0"
+        android:layout_span="2"
+        android:onClick="solveEquation"
+        android:clickable="true"
+        android:layout_below="@+id/variableListView"
+        android:layout_alignParentRight="true" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD EXPRESSION"
+        android:id="@+id/buttonAddExpression"
+        android:layout_column="0"
+        android:clickable="true"
+        android:layout_below="@+id/buttonSolve"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/buttonAddVariable"
+        android:layout_marginRight="10dp"
+        android:onClick="newExpression" />
 
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:id="@+id/editText"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:background="#ffffffff" />
-        </TableRow>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD   VARIABLE"
+        android:id="@+id/buttonAddVariable"
+        android:layout_column="1"
+        android:clickable="true"
+        android:layout_above="@+id/buttonUpdateVariable"
+        android:layout_alignStart="@+id/buttonUpdateVariable"
+        android:layout_alignEnd="@+id/buttonSolve"
+        android:onClick="newVariable" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="UPDATE   VARIABLE"
+        android:id="@+id/buttonUpdateVariable"
+        android:layout_column="1"
+        android:clickable="true"
+        android:layout_below="@+id/buttonAddExpression"
+        android:layout_alignParentEnd="true"
+        android:onClick="updateVariable" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Expressions"
-                android:id="@+id/textView"
-                android:layout_column="0" />
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="UPDATE EXPRESSION"
+        android:id="@+id/buttonUpdateExpression"
+        android:layout_column="0"
+        android:clickable="true"
+        android:layout_alignTop="@+id/buttonUpdateVariable"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="10dp"
+        android:layout_toStartOf="@+id/buttonUpdateVariable"
+        android:onClick="updateExpression" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Variables"
-                android:id="@+id/textView2"
-                android:layout_column="1" />
-        </TableRow>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VIEW FRIENDS"
+        android:id="@+id/buttonFriends"
+        android:layout_column="0"
+        android:layout_span="2"
+        android:onClick="viewFriendsActivity"
+        android:clickable="true"
+        android:layout_below="@+id/button2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="#ffdedede" />
 
-            <ListView
-                android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:id="@+id/expressionListView"
-                android:layout_column="0" />
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="DELETE EXPRESSION"
+        android:id="@+id/button2"
+        android:layout_column="0"
+        android:clickable="true"
+        android:layout_marginRight="10dp"
+        android:onClick="deleteExpression"
+        android:layout_below="@+id/buttonUpdateVariable"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/buttonUpdateVariable" />
 
-            <ListView
-                android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:id="@+id/variableListView"
-                android:layout_column="1" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="SOLVE"
-                android:id="@+id/buttonSolve"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:onClick="solveEquation"
-                android:clickable="true" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ADD EXPRESSION"
-                android:id="@+id/buttonAddExpression"
-                android:layout_column="0"
-                android:clickable="true" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ADD VARIABLE"
-                android:id="@+id/buttonAddVariable"
-                android:layout_column="1"
-                android:clickable="true" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="UPDATE EXPRESSION"
-                android:id="@+id/buttonUpdateExpression"
-                android:layout_column="0"
-                android:clickable="true" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="UPDATE VARIABLE"
-                android:id="@+id/buttonUpdateVariable"
-                android:layout_column="1"
-                android:clickable="true" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="VIEW FRIENDS"
-                android:id="@+id/buttonFriends"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:onClick="viewFriendsActivity"
-                android:clickable="true" />
-        </TableRow>
-
-    </TableLayout>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="DELETE   VARIABLE"
+        android:id="@+id/button6"
+        android:layout_column="0"
+        android:clickable="true"
+        android:onClick="deleteVariable"
+        android:layout_below="@+id/buttonUpdateVariable"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

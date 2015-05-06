@@ -55,6 +55,10 @@ public class Expression {
         return vars.get(key);
     }
 
+    public HashMap<String, Variable> getAllVariables(){
+        return vars;
+    }
+
     //returns the value of a variable for a given key
     public Double getVariableValue(String key){
         return vars.get(key).getVarValue();

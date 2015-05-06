@@ -34,4 +34,8 @@ public class Variable {
         varValue = newVal;
     }
 
+    public String toString(){
+        return varString + " = " + varValue;
+    }
+
 }

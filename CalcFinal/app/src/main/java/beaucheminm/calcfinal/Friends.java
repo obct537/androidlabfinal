@@ -1,19 +1,41 @@
 package beaucheminm.calcfinal;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class Friends extends ActionBarActivity {
+    ArrayList<Friendship> friendshipArrayList;
+    ArrayList<Expression> expressionArrayList;
+    int selectedFriendshipIndex;
+    int selectedExpressionIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
+        friendshipArrayList = new ArrayList<>();
+        expressionArrayList = new ArrayList<>();
+        selectedFriendshipIndex = -1;
+        selectedExpressionIndex = -1;
+        loadFriends();
     }
 
 
@@ -39,9 +61,173 @@ public class Friends extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    public void loadFriends(){
+        friendshipArrayList.clear();
+
+        CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+
+        HashMap<String, Friendship> allFriendships = custom.getAllFriendships();
+        Iterator frIt = allFriendships.entrySet().iterator();
+
+
+        while(frIt.hasNext()){
+            Map.Entry pair = (Map.Entry)frIt.next();
+            Friendship f = (Friendship)pair.getValue();
+            if(f.getEmail_receive().equals(custom.getUserEmail())){
+                friendshipArrayList.add(f);
+            }
+            else if(f.getEmail_send().equals(custom.getUserEmail())){
+                friendshipArrayList.add(f);
+            }
+        }
+
+        Object[] objArr = friendshipArrayList.toArray();
+
+        String[] strArr = new String[objArr.length];
+
+        for(int i = 0; i<objArr.length; i++) {
+            Friendship f = ((Friendship) objArr[i]);
+            if(f.getEmail_receive().equals(custom.getUserEmail())){
+                strArr[i] = f.getEmail_send() + "\n" + f.getStatus();
+            }
+            else if(f.getEmail_send().equals(custom.getUserEmail())){
+                strArr[i] = f.getEmail_receive() + "\n" + f.getStatus();
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strArr);
+        ListView lv = (ListView)findViewById(R.id.friendsListView);
+        lv.setAdapter(adapter);
+        lv.setSelection(-1);
+
+        lv.setOnItemClickListener
+                (
+                        new AdapterView.OnItemClickListener()
+                        {
+                            public void onItemClick(AdapterView adapterView, View view,int arg2, long arg3)
+                            {
+                                selectedFriendshipIndex = arg2;
+                                loadExpressions();
+                            }
+                        }
+                );
+    }
+
+    public void loadExpressions(){
+        expressionArrayList.clear();
+
+        CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+
+        HashMap<Integer, Expression> allExpressions = custom.getAllExpressions();
+        Iterator exprIt = allExpressions.entrySet().iterator();
+
+        String friendEmail;
+        Friendship f = friendshipArrayList.get(selectedFriendshipIndex);
+        if(f.getEmail_send().equals(custom.getUserEmail())){
+            friendEmail = f.getEmail_receive();
+        } else {
+            friendEmail = f.getEmail_send();
+        }
+
+
+        while(exprIt.hasNext()){
+            Map.Entry pair = (Map.Entry)exprIt.next();
+            Expression e = (Expression)pair.getValue();
+            if(e.getCreatorEmail().equals(friendEmail)){
+                expressionArrayList.add(e);
+            }
+        }
+
+        Object[] objArr = expressionArrayList.toArray();
+
+        String[] strArr = new String[objArr.length];
+
+        for(int i = 0; i<objArr.length; i++) {
+            Expression e = ((Expression) objArr[i]);
+            strArr[i] = e.getExpressionString();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strArr);
+        ListView lv = (ListView)findViewById(R.id.friendsExpressionListView);
+        lv.setAdapter(adapter);
+        lv.setSelection(-1);
+
+        lv.setOnItemClickListener
+                (
+                        new AdapterView.OnItemClickListener()
+                        {
+                            public void onItemClick(AdapterView adapterView, View view,int arg2, long arg3)
+                            {
+                                selectedExpressionIndex = arg2;
+                            }
+                        }
+                );
+    }
+
+    public void returnToMain(View v){
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
+
     public void addFriend(View v){
-        TextView t = (TextView)findViewById(R.id.textView7);
-        t.setText(((CustomApplication)this.getApplication()).getUserEmail());
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Add Friend")
+                .setMessage("Enter the email of the person you would like to send a friend request to")
+                .setView(input)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        addNewFriend(input.getText().toString());
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Do nothing.
+            }
+        }).show();
+    }
+
+    public void addNewFriend(String str){
 
     }
+
+    public void removeFriend(View v){
+
+
+    }
+
+    public void saveExpression(View v){
+        CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+
+        Expression temp = expressionArrayList.get(selectedExpressionIndex);
+
+
+        //custom.addExpression(temp.getExpressionString());
+
+        //code is causing issues because the variables never want to be put in the parser without throwing an error
+        HashMap<String, Variable> variables = temp.getAllVariables();
+        custom.addExpression(temp.getExpressionString(), variables);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle("Save Successful");
+
+        // set dialog message
+        alertDialogBuilder.setMessage("Expression has been saved to your profile successfully");
+
+        alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // if this button is clicked, just close
+                // the dialog box and do nothing
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
 }

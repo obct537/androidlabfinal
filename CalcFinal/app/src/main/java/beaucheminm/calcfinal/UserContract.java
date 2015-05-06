@@ -17,8 +17,27 @@ public final class UserContract {
      */
     public static abstract class UserEntry implements BaseColumns {
         public static final String TABLE_NAME = "users";
-        public static final String COLUMN_NAME_USERNAME = "username";
+        public static final String COLUMN_NAME_EMAIL = "email";
         public static final String COLUMN_NAME_PASSWORD = "password";
+    }
 
+    public static abstract class ExpressionEntry implements BaseColumns {
+        public static final String TABLE_NAME = "expressions";
+        public static final String COLUMN_NAME_EMAIL = "email";
+        public static final String COLUMN_NAME_EXPRESSIONSTRING = "expressionString";
+    }
+
+    public static abstract class VariableEntry implements BaseColumns {
+        public static final String TABLE_NAME = "variables";
+        public static final String COLUMN_NAME_EXPRESSIONID = "expressionID";
+        public static final String COLUMN_NAME_VARSTRING = "varString";
+        public static final String COLUMN_NAME_VARVALUE = "varValue";
+    }
+
+    public static abstract class FriendshipEntry implements BaseColumns {
+        public static final String TABLE_NAME = "friendship";
+        public static final String COLUMN_NAME_EMAILSEND = "email_send";
+        public static final String COLUMN_NAME_EMAILRECEIVE = "email_receive";
+        public static final String COLUMN_NAME_STATUS = "status";
     }
 }

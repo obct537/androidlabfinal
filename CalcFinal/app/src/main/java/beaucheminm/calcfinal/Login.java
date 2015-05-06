@@ -21,7 +21,6 @@ public class Login extends ActionBarActivity {
         setContentView(R.layout.activity_login);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -58,7 +57,7 @@ public class Login extends ActionBarActivity {
             s.close();
             return;
         }
-        cv.put(UserContract.UserEntry.COLUMN_NAME_USERNAME, uname);
+        cv.put(UserContract.UserEntry.COLUMN_NAME_EMAIL, uname);
         cv.put(UserContract.UserEntry.COLUMN_NAME_PASSWORD, pass);
 
         s.insert(UserContract.UserEntry.TABLE_NAME, "null", cv);
@@ -76,7 +75,7 @@ public class Login extends ActionBarActivity {
 
         String[] projection = {
                 UserContract.UserEntry._ID,
-                UserContract.UserEntry.COLUMN_NAME_USERNAME,
+                UserContract.UserEntry.COLUMN_NAME_EMAIL,
                 UserContract.UserEntry.COLUMN_NAME_PASSWORD
         };
 

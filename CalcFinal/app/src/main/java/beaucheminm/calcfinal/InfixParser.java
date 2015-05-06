@@ -448,7 +448,7 @@ public class InfixParser {
      * @param exp               User assignment string
      * @return boolean         whether or not the variable was set properly
      */
-    private boolean setVariable(String exp) {
+    public boolean setVariable(String exp) {
 
         try {
             Matcher matcher = getVariableMatcher(exp);
