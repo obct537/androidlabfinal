@@ -132,7 +132,7 @@ public class CustomApplication extends Application {
             JSONArray j = null;
             try {
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://141.233.90.211:8888/index.php");
+                HttpPost httppost = new HttpPost("http://ec2-52-24-173-231.us-west-2.compute.amazonaws.com/index.php");
                 // Add your data via a POST command. insert.php accesses variable by using $_POST['variable']
                 // See attached php page to see the whole example.
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -143,7 +143,15 @@ public class CustomApplication extends Application {
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
                 String r = EntityUtils.toString(entity);
-                j = new JSONArray(r);
+
+                if( r.equals("") )
+                {
+                    ((TextView)a.findViewById(R.id.errotText)).setText("Invalid Login");
+                    j = new JSONArray("");
+                }
+                else {
+                    j = new JSONArray(r);
+                }
 
             } catch (ClientProtocolException e) {
                 Log.i("main", "bad thing happened");
@@ -161,6 +169,11 @@ public class CustomApplication extends Application {
         // This is called when doInBackground() is finished
         protected void onPostExecute(JSONArray j) {
             String t = j.toString();
+
+            if( t.equals("") )
+            {
+                return;
+            }
             try {
                 JSONArray vars = j.getJSONArray(0);
                 JSONArray exps = j.getJSONArray(1);
