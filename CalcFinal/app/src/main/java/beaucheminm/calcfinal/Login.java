@@ -73,19 +73,7 @@ public class Login extends ActionBarActivity {
         String uname = ((EditText)findViewById(R.id.emailText)).getText().toString();
         String pass = ((EditText)findViewById(R.id.passwordText)).getText().toString();
 
-        if( uname.equals("") || pass.equals("") )
-        {
-            //((TextView)findViewById(R.id.txtInfo)).setText("Username/Password cannot be empty.");
-            s.close();
-            return;
-        }
-        cv.put(UserContract.UserEntry.COLUMN_NAME_EMAIL, uname);
-        cv.put(UserContract.UserEntry.COLUMN_NAME_PASSWORD, pass);
-
-        s.insert(UserContract.UserEntry.TABLE_NAME, "null", cv);
-        s.close();
-
-        //((TextView)findViewById(R.id.txtInfo)).setText("Login created. Please log in now.");
+        new login(this, uname, pass, "signup");
     }
 
     public void attemptLogin(View v){
@@ -95,18 +83,19 @@ public class Login extends ActionBarActivity {
         String uname = ((EditText)findViewById(R.id.emailText)).getText().toString();
         String pass = ((EditText)findViewById(R.id.passwordText)).getText().toString();
 
-        new login(this, uname, pass).execute();
+        new login(this, uname, pass, "login").execute();
     }
 
     private class login extends AsyncTask<Long, Integer, JSONObject> {
 
         Activity a;
-        String email, pass;
+        String email, pass, action;
 
-        public login(Activity a, String email, String pass) {
+        public login(Activity a, String email, String pass, String action) {
             this.a = a;
             this.email = email;
             this.pass = pass;
+            this.action = action;
         }
 
         protected JSONObject doInBackground(Long... v) {
@@ -117,7 +106,7 @@ public class Login extends ActionBarActivity {
                 // Add your data via a POST command. insert.php accesses variable by using $_POST['variable']
                 // See attached php page to see the whole example.
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-                nameValuePairs.add(new BasicNameValuePair("action", "login"));
+                nameValuePairs.add(new BasicNameValuePair("action", this.action));
                 nameValuePairs.add(new BasicNameValuePair("email", this.email));
                 nameValuePairs.add(new BasicNameValuePair("pass", this.pass));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -140,19 +129,19 @@ public class Login extends ActionBarActivity {
             //must return something. This is why I return null.
             return j;
         }
+
         protected void onPostExecute(JSONObject j) {
             String t = j.toString();
             try {
+
+                ((CustomApplication) getApplicationContext()).setUserEmail(j.getString("email"));
                 Intent i = new Intent(this.a, MainActivity.class);
 
-                ((CustomApplication)getApplicationContext()).setUserEmail(j.getString("email"));
                 startActivity(i);
-;
             } catch (Exception e) {
-                e.printStackTrace();
+                ((TextView)a.findViewById(R.id.errotText)).setText("Invalid login");
             }
         }
     }
-
 
 }

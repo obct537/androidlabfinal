@@ -33,7 +33,7 @@ public class InfixParser {
 
     //This regex matches something similar to: a = 3.6
     private static final Pattern varRegex =
-            Pattern.compile("\\s*([A-Za-z]+)\\s*=\\s*([\\d+][\\.]?[\\d+]?)");
+            Pattern.compile("\\s*([A-Za-z]+)\\s*=\\s*([0-9]*\\.?[0-9]*)");
     private static String newline = System.getProperty("line.separator");
     private static HashMap<String, Integer> operators;
 
