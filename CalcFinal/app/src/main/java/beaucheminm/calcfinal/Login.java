@@ -107,8 +107,8 @@ public class Login extends ActionBarActivity {
                 // See attached php page to see the whole example.
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
                 nameValuePairs.add(new BasicNameValuePair("action", this.action));
-                nameValuePairs.add(new BasicNameValuePair("email", this.email));
-                nameValuePairs.add(new BasicNameValuePair("pass", this.pass));
+                nameValuePairs.add(new BasicNameValuePair("email", "person@place.com"));
+                nameValuePairs.add(new BasicNameValuePair("pass", "password"));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
