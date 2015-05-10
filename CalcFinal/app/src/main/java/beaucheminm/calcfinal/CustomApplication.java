@@ -109,6 +109,18 @@ public class CustomApplication extends Application {
         expressions.put(newID, e);
     }
 
+    public void sendFriendRequest(String str){
+        //first find what friendship ID can be used for a new expression
+        int newID = 0;
+        for(int i = 0; newID == 0; i++){
+            if(!friendships.containsKey(i)){
+                newID = i;
+            }
+        }
+
+        friendships.put((userEmail + " " + str), new Friendship(newID, userEmail, str, "Pending"));
+    }
+
     public void addVariable(Integer expressionID, String varString, Double value){
         expressions.get(expressionID).addVariable(varString, value);
     }

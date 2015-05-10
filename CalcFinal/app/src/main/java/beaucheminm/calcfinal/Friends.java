@@ -61,8 +61,6 @@ public class Friends extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     public void loadFriends(){
         friendshipArrayList.clear();
 
@@ -75,11 +73,21 @@ public class Friends extends ActionBarActivity {
         while(frIt.hasNext()){
             Map.Entry pair = (Map.Entry)frIt.next();
             Friendship f = (Friendship)pair.getValue();
-            if(f.getEmail_receive().equals(custom.getUserEmail())){
-                friendshipArrayList.add(f);
+
+            if(f.getStatus().equals("Existing")){
+                if(f.getEmail_receive().equals(custom.getUserEmail())){
+                    friendshipArrayList.add(f);
+                }
+                else if(f.getEmail_send().equals(custom.getUserEmail())){
+                    friendshipArrayList.add(f);
+                }
             }
-            else if(f.getEmail_send().equals(custom.getUserEmail())){
-                friendshipArrayList.add(f);
+            //if the user status is pending, only the user receiving the request can see the friendship
+            else
+            {
+                if(f.getEmail_receive().equals(custom.getUserEmail())){
+                    friendshipArrayList.add(f);
+                }
             }
         }
 
@@ -89,12 +97,21 @@ public class Friends extends ActionBarActivity {
 
         for(int i = 0; i<objArr.length; i++) {
             Friendship f = ((Friendship) objArr[i]);
-            if(f.getEmail_receive().equals(custom.getUserEmail())){
-                strArr[i] = f.getEmail_send() + "\n" + f.getStatus();
+            if(f.getStatus().equals("Existing")){
+                if(f.getEmail_receive().equals(custom.getUserEmail())){
+                }
+                else if(f.getEmail_send().equals(custom.getUserEmail())){
+                }
             }
-            else if(f.getEmail_send().equals(custom.getUserEmail())){
-                strArr[i] = f.getEmail_receive() + "\n" + f.getStatus();
+            else
+            {
+                if(f.getEmail_receive().equals(custom.getUserEmail())){
+                }
+                else if(f.getEmail_send().equals(custom.getUserEmail())){
+                }
             }
+
+
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strArr);
@@ -125,45 +142,51 @@ public class Friends extends ActionBarActivity {
 
         String friendEmail;
         Friendship f = friendshipArrayList.get(selectedFriendshipIndex);
-        if(f.getEmail_send().equals(custom.getUserEmail())){
-            friendEmail = f.getEmail_receive();
-        } else {
-            friendEmail = f.getEmail_send();
-        }
 
-
-        while(exprIt.hasNext()){
-            Map.Entry pair = (Map.Entry)exprIt.next();
-            Expression e = (Expression)pair.getValue();
-            if(e.getCreatorEmail().equals(friendEmail)){
-                expressionArrayList.add(e);
+        if(f.getStatus().equals("Existing")) {
+            if (f.getEmail_send().equals(custom.getUserEmail())) {
+                friendEmail = f.getEmail_receive();
+            } else {
+                friendEmail = f.getEmail_send();
             }
-        }
 
-        Object[] objArr = expressionArrayList.toArray();
 
-        String[] strArr = new String[objArr.length];
+            while (exprIt.hasNext()) {
+                Map.Entry pair = (Map.Entry) exprIt.next();
+                Expression e = (Expression) pair.getValue();
+                if (e.getCreatorEmail().equals(friendEmail)) {
+                    expressionArrayList.add(e);
+                }
+            }
 
-        for(int i = 0; i<objArr.length; i++) {
-            Expression e = ((Expression) objArr[i]);
-            strArr[i] = e.getExpressionString();
-        }
+            Object[] objArr = expressionArrayList.toArray();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strArr);
-        ListView lv = (ListView)findViewById(R.id.friendsExpressionListView);
-        lv.setAdapter(adapter);
-        lv.setSelection(-1);
+            String[] strArr = new String[objArr.length];
 
-        lv.setOnItemClickListener
-                (
-                        new AdapterView.OnItemClickListener()
-                        {
-                            public void onItemClick(AdapterView adapterView, View view,int arg2, long arg3)
+            for (int i = 0; i < objArr.length; i++) {
+                Expression e = ((Expression) objArr[i]);
+                strArr[i] = e.getExpressionString();
+            }
+
+
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strArr);
+            ListView lv = (ListView) findViewById(R.id.friendsExpressionListView);
+            lv.setAdapter(adapter);
+            lv.setSelection(-1);
+
+
+            lv.setOnItemClickListener
+                    (
+                            new AdapterView.OnItemClickListener()
                             {
-                                selectedExpressionIndex = arg2;
+                                public void onItemClick(AdapterView adapterView, View view,int arg2, long arg3)
+                                {
+                                    selectedExpressionIndex = arg2;
+                                }
                             }
-                        }
-                );
+                    );
+        }
     }
 
     public void returnToMain(View v){
@@ -191,7 +214,11 @@ public class Friends extends ActionBarActivity {
     }
 
     public void addNewFriend(String str){
-
+        //This is the code to send a friend request when you close the application
+        //this code does NOT do a live database hit
+        //str is the name of the friend that should be sent a request to
+        CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+        custom.sendFriendRequest(str);
     }
 
     public void removeFriend(View v){
@@ -219,10 +246,6 @@ public class Friends extends ActionBarActivity {
 
         Expression temp = expressionArrayList.get(selectedExpressionIndex);
 
-
-        //custom.addExpression(temp.getExpressionString());
-
-        //code is causing issues because the variables never want to be put in the parser without throwing an error
         HashMap<String, Variable> variables = temp.getAllVariables();
         custom.addExpression(temp.getExpressionString(), variables);
 
@@ -249,8 +272,19 @@ public class Friends extends ActionBarActivity {
         if(selectedFriendshipIndex!=-1) {
             CustomApplication custom = ((CustomApplication)this.getApplicationContext());
             Friendship f = friendshipArrayList.get(selectedFriendshipIndex);
-            f.setStatus("Existing");
-            loadFriends();
+            if(f.getStatus().equals("Pending")){
+                custom.getAllFriendships().get(f.getEmail_send() + " " + f.getEmail_receive()).setStatus("Existing");
+                loadFriends();
+            }
+            else
+            {
+                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+                dlgAlert.setMessage("This user is already your friend");
+                dlgAlert.setTitle("Error: No Request Selected");
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.setCancelable(true);
+                dlgAlert.create().show();
+            }
         } else {
             AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
             dlgAlert.setMessage("Please select a friend");
@@ -263,7 +297,30 @@ public class Friends extends ActionBarActivity {
     }
 
     public void declineFriendRequest(View v){
-        removeFriend();
+        if(selectedFriendshipIndex!=-1) {
+            CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+            Friendship f = friendshipArrayList.get(selectedFriendshipIndex);
+            if(f.getStatus().equals("Pending")){
+                custom.getAllFriendships().remove(f.getEmail_send() + " " + f.getEmail_receive());
+                loadFriends();
+            }
+            else
+            {
+                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+                dlgAlert.setMessage("To remove existing friend, please click Remove Friend");
+                dlgAlert.setTitle("Error: No Request Selected");
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.setCancelable(true);
+                dlgAlert.create().show();
+            }
+        } else {
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+            dlgAlert.setMessage("Please select a friend");
+            dlgAlert.setTitle("Error: No Friend Selected");
+            dlgAlert.setPositiveButton("OK", null);
+            dlgAlert.setCancelable(true);
+            dlgAlert.create().show();
+        }
     }
 
 }
