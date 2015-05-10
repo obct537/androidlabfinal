@@ -195,8 +195,23 @@ public class Friends extends ActionBarActivity {
     }
 
     public void removeFriend(View v){
+        removeFriend();
+    }
 
-
+    public void removeFriend(){
+        if(selectedFriendshipIndex!=-1) {
+            CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+            Friendship f = friendshipArrayList.get(selectedFriendshipIndex);
+            custom.getAllFriendships().remove(f.getEmail_send() + " " + f.getEmail_receive());
+            loadFriends();
+        } else {
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+            dlgAlert.setMessage("Please select a friend");
+            dlgAlert.setTitle("Error: No Friend Selected");
+            dlgAlert.setPositiveButton("OK", null);
+            dlgAlert.setCancelable(true);
+            dlgAlert.create().show();
+        }
     }
 
     public void saveExpression(View v){
@@ -228,6 +243,27 @@ public class Friends extends ActionBarActivity {
         });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+    }
+
+    public void acceptFriendRequest(View v){
+        if(selectedFriendshipIndex!=-1) {
+            CustomApplication custom = ((CustomApplication)this.getApplicationContext());
+            Friendship f = friendshipArrayList.get(selectedFriendshipIndex);
+            f.setStatus("Existing");
+            loadFriends();
+        } else {
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+            dlgAlert.setMessage("Please select a friend");
+            dlgAlert.setTitle("Error: No Friend Selected");
+            dlgAlert.setPositiveButton("OK", null);
+            dlgAlert.setCancelable(true);
+            dlgAlert.create().show();
+        }
+
+    }
+
+    public void declineFriendRequest(View v){
+        removeFriend();
     }
 
 }

@@ -31,4 +31,8 @@ public class Friendship {
     public String getStatus(){
         return status;
     }
+
+    public void setStatus(String sts){
+        status = sts;
+    }
 }
