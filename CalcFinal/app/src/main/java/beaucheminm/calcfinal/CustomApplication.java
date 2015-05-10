@@ -146,7 +146,7 @@ public class CustomApplication extends Application {
 
                 if( r.equals("") )
                 {
-                    ((TextView)a.findViewById(R.id.errotText)).setText("Invalid Login");
+                    ((TextView)a.findViewById(R.id.errorText)).setText("Invalid Login");
                     j = new JSONArray("");
                 }
                 else {

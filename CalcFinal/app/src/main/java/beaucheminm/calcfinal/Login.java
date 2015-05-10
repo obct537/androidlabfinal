@@ -66,20 +66,13 @@ public class Login extends ActionBarActivity {
     }
 
     public void attemptSignup(View v){
-        DBHelper n = new DBHelper(getApplicationContext());
-        SQLiteDatabase s = n.getWritableDatabase();
-
-        ContentValues cv = new ContentValues();
         String uname = ((EditText)findViewById(R.id.emailText)).getText().toString();
         String pass = ((EditText)findViewById(R.id.passwordText)).getText().toString();
 
-        new login(this, uname, pass, "signup");
+        new login(this, uname, pass, "signup").execute();
     }
 
     public void attemptLogin(View v){
-        DBHelper dbh = new DBHelper(getApplicationContext());
-        SQLiteDatabase db = dbh.getReadableDatabase();
-
         String uname = ((EditText)findViewById(R.id.emailText)).getText().toString();
         String pass = ((EditText)findViewById(R.id.passwordText)).getText().toString();
 
@@ -87,7 +80,6 @@ public class Login extends ActionBarActivity {
     }
 
     private class login extends AsyncTask<Long, Integer, JSONObject> {
-
         Activity a;
         String email, pass, action;
 
@@ -107,8 +99,8 @@ public class Login extends ActionBarActivity {
                 // See attached php page to see the whole example.
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
                 nameValuePairs.add(new BasicNameValuePair("action", this.action));
-                nameValuePairs.add(new BasicNameValuePair("email", "person@place.com"));
-                nameValuePairs.add(new BasicNameValuePair("pass", "password"));
+                nameValuePairs.add(new BasicNameValuePair("email", email));
+                nameValuePairs.add(new BasicNameValuePair("pass", pass));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
@@ -131,15 +123,15 @@ public class Login extends ActionBarActivity {
         }
 
         protected void onPostExecute(JSONObject j) {
-            String t = j.toString();
             try {
 
                 ((CustomApplication) getApplicationContext()).setUserEmail(j.getString("email"));
+                Log.i("email ---- ", j.getString("email"));
                 Intent i = new Intent(this.a, MainActivity.class);
 
                 startActivity(i);
             } catch (Exception e) {
-                ((TextView)a.findViewById(R.id.errotText)).setText("Invalid login");
+                ((TextView)a.findViewById(R.id.errorText)).setText("Invalid login");
             }
         }
     }
