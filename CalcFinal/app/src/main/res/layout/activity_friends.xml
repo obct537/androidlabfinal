@@ -103,7 +103,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Decline Request"
+        android:text="DECLINE REQUEST"
         android:id="@+id/button7"
         android:layout_column="1"
         android:clickable="true"
@@ -115,7 +115,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accept Request"
+        android:text="ACCEPT REQUEST"
         android:id="@+id/button8"
         android:layout_column="1"
         android:clickable="true"

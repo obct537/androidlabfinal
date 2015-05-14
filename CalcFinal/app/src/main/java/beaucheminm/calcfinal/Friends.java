@@ -99,15 +99,19 @@ public class Friends extends ActionBarActivity {
             Friendship f = ((Friendship) objArr[i]);
             if(f.getStatus().equals("Existing")){
                 if(f.getEmail_receive().equals(custom.getUserEmail())){
+                    strArr[i] = f.getEmail_send();
                 }
                 else if(f.getEmail_send().equals(custom.getUserEmail())){
+                    strArr[i] = f.getEmail_receive();
                 }
             }
             else
             {
                 if(f.getEmail_receive().equals(custom.getUserEmail())){
+                    strArr[i] = "[Friend Request] \n" + f.getEmail_send();
                 }
                 else if(f.getEmail_send().equals(custom.getUserEmail())){
+                    strArr[i] = "[Friend Request] \n" + f.getEmail_receive();
                 }
             }
 

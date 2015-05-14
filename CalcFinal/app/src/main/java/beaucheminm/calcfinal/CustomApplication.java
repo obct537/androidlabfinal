@@ -212,7 +212,7 @@ public class CustomApplication extends Application {
                     JSONObject o = f.getJSONObject(i);
                     Friendship e = new Friendship(o.getInt("id"), o.getString("email_send"), o.getString("email_receive"), o.getString("status"));
 
-                    friendships.put(o.getString("id"), e);
+                    friendships.put(e.getEmail_send() + " " + e.getEmail_receive(), e);
                 }
 
                 a.loadExpressions();
