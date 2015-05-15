@@ -69,7 +69,8 @@ public class MainActivity extends ActionBarActivity {
     {
         super.onStop();
         HashMap exps = ((CustomApplication)this.getApplicationContext()).getAllExpressions();
-        expressionManager e = new expressionManager(exps);
+        HashMap friends = ((CustomApplication)this.getApplicationContext()).getAllFriendships();
+        expressionManager e = new expressionManager(exps, friends);
 
         e.save();
     }

@@ -29,12 +29,15 @@ import java.util.List;
 public class expressionManager {
 
     HashMap<String, Expression> exps;
+    HashMap<String, Friendship> friends;
     String expressionJSON;
     String variableJSON;
+    String friendJSON;
 
-    public expressionManager(HashMap<String, Expression> exps)
+    public expressionManager(HashMap<String, Expression> exps, HashMap<String, Friendship> friends)
     {
         this.exps = exps;
+        this.friends = friends;
     }
 
     public void setOut()
@@ -43,6 +46,7 @@ public class expressionManager {
 
         JSONArray expressions = new JSONArray();
         JSONArray variables = new JSONArray();
+        JSONArray friendArr = new JSONArray();
 
         int count = 0;
 
@@ -80,7 +84,28 @@ public class expressionManager {
 
         }
 
+        Iterator i = this.friends.keySet().iterator();
 
+        while( i.hasNext() )
+        {
+            JSONObject obj = new JSONObject();
+            Friendship f = friends.get(i.next());
+
+            try {
+                obj.put("email_send", f.getEmail_send());
+                obj.put("email_receive", f.getEmail_receive());
+                obj.put("status", f.getStatus());
+
+                friendArr.put(obj);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+
+        friendJSON = friendArr.toString();
         expressionJSON = expressions.toString();
         variableJSON = variables.toString();
     }
@@ -101,10 +126,11 @@ public class expressionManager {
                 HttpPost httppost = new HttpPost("http://ec2-52-24-173-231.us-west-2.compute.amazonaws.com/index.php");
                 // Add your data via a POST command. insert.php accesses variable by using $_POST['variable']
                 // See attached php page to see the whole example.
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
                 nameValuePairs.add(new BasicNameValuePair("action", "setNewData"));
                 nameValuePairs.add(new BasicNameValuePair("exps", expressionJSON));
                 nameValuePairs.add(new BasicNameValuePair("vars", variableJSON));
+                nameValuePairs.add(new BasicNameValuePair("friends", friendJSON));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
