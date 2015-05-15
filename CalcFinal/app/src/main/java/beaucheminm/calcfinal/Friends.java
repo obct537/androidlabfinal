@@ -38,7 +38,16 @@ public class Friends extends ActionBarActivity {
         loadFriends();
     }
 
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        HashMap exps = ((CustomApplication)this.getApplicationContext()).getAllExpressions();
+        HashMap friends = ((CustomApplication)this.getApplicationContext()).getAllFriendships();
+        expressionManager e = new expressionManager(exps, friends);
 
+        e.save();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     @Override
-    protected void onStop()
+    public void onStop()
     {
         super.onStop();
         HashMap exps = ((CustomApplication)this.getApplicationContext()).getAllExpressions();
